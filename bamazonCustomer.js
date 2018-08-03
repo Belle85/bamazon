@@ -52,7 +52,7 @@ function start() {
     .prompt([
       {
         type: "input",
-        name: "product_id",
+        name: "item_id",
         message: "What product would you like to buy? Enter the product ID.",
         validate: function (value) {
           if (isNaN(value) === false) {

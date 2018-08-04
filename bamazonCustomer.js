@@ -75,6 +75,7 @@ function start() {
     .then(function (answer) {
       connection.query("SELECT * FROM products WHERE item_id = " + answer.itemID, function (err, response) {
         if (err) throw err;
+
         var productName = response[0].product_name;
         var productId = response[0].item_id;
         var productDpt = response[0].dpt_name;
@@ -83,10 +84,18 @@ function start() {
 
        
         console.log("You wish to order " + answer.orderQTTY + " unit(s) of " + 
-        productName + "(id: " + productId + ") from our " +
+        productName + "(id:" + productId + ") from our " +
         productDpt + " department.\nWe currently have " + productInStock + " at $" + productPrice + " per unit.");
-        
+               
+        if(parseInt(answer.itemID) === parseInt(productId)){
+          console.log("Your order has been placed.");
+        }
+        else{
+          console.log("Insufficient stock");
+        }
+          
+        });
       })
-    })
-}
+    }
+
 

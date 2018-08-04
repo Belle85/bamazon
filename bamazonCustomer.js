@@ -39,7 +39,7 @@ figlet("Belle's Store", function (err, data) {
 
 //USE OF TABLEFY TO DISPLAY DATABASE AS TABLE IN NODE.JS
 let table = new Tablefy()
-connection.query("SELECT * FROM products", function(err, res) {
+connection.query("SELECT * FROM products", function (err, res) {
   table.draw(res);
   start()
 });
@@ -72,12 +72,20 @@ function start() {
         default: 1
       }
     ])
-    .then (function(answer){
-      connection.query("SELECT * FROM products WHERE item_id = " + answer.itemID, function(err, response){
+    .then(function (answer) {
+      connection.query("SELECT * FROM products WHERE item_id = " + answer.itemID, function (err, response) {
         if (err) throw err;
-       var productPurchase = response[0].product_name;
-       console.log("You wish to order "+ answer.orderQTTY + " unit(s) of " + productPurchase);
+        var productName = response[0].product_name;
+        var productId = response[0].item_id;
+        var productDpt = response[0].dpt_name;
+        var productPrice = response[0].price;
+        var productInStock = response[0].stock_quantity;
 
+       
+        console.log("You wish to order " + answer.orderQTTY + " unit(s) of " + 
+        productName + "(id: " + productId + ") from our " +
+        productDpt + " department.\nWe currently have " + productInStock + " at $" + productPrice + " per unit.");
+        
       })
     })
 }

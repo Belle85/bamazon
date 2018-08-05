@@ -28,7 +28,7 @@ connection.connect(function (err) {
 
 // --------------------------------------------------------------
 
-//USE OF FIGLER TO DISPLAY WORDING AS NAME/TITLE
+//USE OF FIGLET TO DISPLAY WORDING AS NAME/TITLE
 figlet("Belle's Store", function (err, data) {
   if (err) {
     console.log(err);
@@ -82,20 +82,36 @@ function start() {
         var productPrice = response[0].price;
         var productInStock = response[0].stock_quantity;
 
-       
-        console.log("You wish to order " + answer.orderQTTY + " unit(s) of " + 
-        productName + "(id:" + productId + ") from our " +
-        productDpt + " department.\nWe currently have " + productInStock + " at $" + productPrice + " per unit.");
-               
-        if(parseInt(answer.itemID) === parseInt(productId)){
-          console.log("Your order has been placed.");
+
+        console.log("You wish to order " + answer.orderQTTY + " unit(s) of " +
+          productName + "(id:" + productId + ") from our " +
+          productDpt + " department.\nWe currently have " + productInStock + " at $" + productPrice + " per unit.");
+
+        if (parseInt(answer.itemID) === parseInt(productId) && (parseInt(answer.orderQTTY) <= parseInt(productInStock))) {
+          var updatedStock = productInStock - answer.orderQTTY;
+         
+          connection.query("UPDATE products SET ? WHERE ?",
+            [
+              {
+                stock_quantity: updatedStock
+              },
+              {
+                item_id: answer.itemID
+              }
+            ],
+            function (err) {
+              if (err) console.log("here is your error");
+              console.log("Your order has been placed.");
+              start();
+            }
+          );
         }
-        else{
+        else {
           console.log("Insufficient stock");
+          start();
         }
-          
-        });
-      })
-    }
+      });
+    })
+}
 
 

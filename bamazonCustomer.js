@@ -68,7 +68,7 @@ function start() {
       {
         type: "input",
         name: "orderQTTY",
-        message: " How many units of this item would you like to purchase?",
+        message: "How many units of this item would you like to purchase?",
         default: 1
       }
     ])
@@ -101,8 +101,7 @@ function start() {
             ],
             function (err) {
               if (err) console.log("here is your error");
-              console.log("Your order has been placed.");
-              start();
+              console.log("Your order has been placed.\nYour total is $" + (answer.orderQTTY * productPrice) + ".");
             }
           );
         }
@@ -113,5 +112,6 @@ function start() {
       });
     })
 }
+
 
 
